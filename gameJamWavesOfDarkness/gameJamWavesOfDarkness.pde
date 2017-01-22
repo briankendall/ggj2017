@@ -75,6 +75,9 @@ void setup()
   getSparkleRenderer().setup();
   getSparkleRenderer().createSparkles(100, 100, 64, 64, color(255, 0, 0), 1.0);
   
+  getRippleRenderer().setup();
+  getRippleRenderer().createRipples(300, 300, 100, new color[]{color(0,255,0), color(0, 0, 255)});
+  
   //Fill in the tileset
   tileset = new HashMap();
   itemset = new HashMap();
@@ -163,6 +166,7 @@ void draw()
   popMatrix();
   
   getSparkleRenderer().draw();
+  getRippleRenderer().draw();
 }
 
 //Convenient function for getting a full filepath name

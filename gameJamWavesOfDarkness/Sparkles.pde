@@ -1,9 +1,5 @@
 import java.util.HashMap;
 
-int randomInt(int a, int b) {
-    return int(random(a, b+1));
-}
-
 private PImage[] sparkleImages;
 
 class Sparkle {
@@ -57,7 +53,6 @@ class SparkleRegion {
             s.r = random(0, PI);
             s.opacity = random(minSparkleOpacity, maxSparkleOpactiy);
             sparkles.add(s);
-            println("spawning sparkle at: " + s.x + " " + s.y);
             
         } else {
             spawnCount -= 1;
