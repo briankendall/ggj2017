@@ -45,6 +45,7 @@ HashMap<Integer, Item> itemset;
 //Constants for forms of interation
 final int PLAYER_INTERACT = 14;
 final int LIGHT_RED = 0;
+final int LIGHT_NONE = 0;
 final int LIGHT_GREEN = 2;
 final int LIGHT_BLUE = 4;
 final int LIGHT_YELLOW = 1;
@@ -59,6 +60,7 @@ final int SOUND_CYAN = 11;
 final int SOUND_BLUE = 12;
 final int SOUND_PURPLE = 13;
 final int TOTAL_INTERACTIONS = 15;
+final int TOTAL_LIGHT = 8;
 
 //Initializes everything
 /*Paremeters:
@@ -127,6 +129,11 @@ void setup()
   }
   curLevel = new Level(fullFilepath(dataPath(""), "example.tmx"));
   curPlayer = curLevel.getPlayer();
+  
+  getLightManager().setup(curLevel);
+  //getLightManager().createLight(6, 7, RIGHT_DIRECTION, LIGHT_RED);
+  //getLightManager().createLight(8, 4, DOWN_DIRECTION, LIGHT_BLUE);
+  //getLightManager().createLight(14, 10, LEFT_DIRECTION, LIGHT_GREEN);
 }
 
 //The loop for screen rendering
@@ -175,6 +182,7 @@ void draw()
   
   getSparkleRenderer().draw();
   getRippleRenderer().draw();
+  getLightManager().draw();
 }
 
 //Convenient function for getting a full filepath name
@@ -207,10 +215,24 @@ public PImage[][] getSpriteLayout(Entity[][] entityMap)
     for(int col = 0; col < entityMap[row].length; col++)
     {
       toRender[row][col] = ((entityMap[row][col] == null) || (!entityMap[row][col].getVisible())) ? null:entityMap[row][col].getSprite();
-      /*for()
+      if(entityMap[row][col] == null) {continue;}
+      //Determine which sparkles/ripples are needed for the entity (and not exposed yet)
+      boolean[] trigg = entityMap[row][col].getTriggers();
+      boolean[] expos = entityMap[row][col].getExposures();
+      for(int thing = 0; thing < trigg.length; thing++)
       {
-        getSparkleRenderer().createSparkles(100, 100, 64, 64, color(255, 0, 0), 1.0);
-      }*/
+        if(trigg[thing] && !expos[thing])
+        {
+          if((thing < TOTAL_LIGHT) && (thing >= LIGHT_NONE))
+          {
+            getSparkleRenderer().createSparkles(col * toRender[row][col].height, row * toRender[row][col].width, 64, 64, colorForLightColor(thing, 255), 1.0);
+          }
+          else
+          {
+            //getRippleRenderer().createRipples((col + 0.5) * toRender[row][col].height , (row + 0.5) * toRender[row][col].width, 100, new color[]{color(0,255,0), color(0, 0, 255)});
+          }
+        }
+      }
     }
   }
   
