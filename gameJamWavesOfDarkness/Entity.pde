@@ -99,5 +99,6 @@ public class Entity
   public void setEmit(int e) {emit = e;}
   public void setSparkleId(int i) { sparkleId = i; };
   public void setRippleId(int i) { rippleId = i; };
+  public void setBlueprint(Item i) {blueprint = i;}
   //Mutator methods - END
 }

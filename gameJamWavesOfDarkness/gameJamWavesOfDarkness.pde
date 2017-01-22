@@ -35,6 +35,9 @@ final int LEFT_DIRECTION = 3;
 Level curLevel = null;
 //The player character
 Entity curPlayer = null;
+//For player animation
+int renderFrame;
+int playerFrame;
 
 //The tileset association (tile ID -> filepath)
 HashMap<Integer, String> tileset;
@@ -61,6 +64,8 @@ final int SOUND_PURPLE = 14;
 final int PLAYER_INTERACT = 15;
 final int TOTAL_INTERACTIONS = 16;
 final int TOTAL_LIGHT = 8;
+final int TOTAL_SOUND = 7;
+final int SOUND_NONE = 16;
 final int SOUND_START = 8;
 final int SOUND_END = 14;
 
@@ -89,41 +94,60 @@ void setup()
   tileset = new HashMap();
   itemset = new HashMap();
 
-  tileset.put(0, "sprites/exit-temp.png");
+  //tileset.put(0, "sprites/exit-temp.png");
+  tileset.put(0, "sprites/TTeam/ExitWell.png");
   itemset.put(0, new ExitItem(tileset.get(0), NOT_MOVEABLE, NO_DIRECTION));
   
-  tileset.put(1, "sprites/instrument-moveable-temp.png");
+  //tileset.put(1, "sprites/instrument-moveable-temp.png");
+  tileset.put(1, "sprites/TTeam/AudioCube.png");
   itemset.put(1, new InstrumentItem(tileset.get(1), MOVEABLE, NO_DIRECTION));
   
-  tileset.put(2, "sprites/instrument-static-temp.png");
+  //tileset.put(2, "sprites/instrument-static-temp.png");
+  tileset.put(2, "sprites/TTeam/AudioCube.png");
   itemset.put(2, new InstrumentItem(tileset.get(2), NOT_MOVEABLE, NO_DIRECTION));
   
-  tileset.put(3, "sprites/light-down-moveable-temp.png");
+  //tileset.put(3, "sprites/light-down-moveable-temp.png");
+  tileset.put(3, "sprites/TTeam/LightOrb.png");
   itemset.put(3, new LightItem(tileset.get(3), MOVEABLE, DOWN_DIRECTION));
   
-  tileset.put(4, "sprites/light-down-static-temp.png");
+  //tileset.put(4, "sprites/light-down-static-temp.png");
+  tileset.put(4, "sprites/TTeam/LightOrb.png");
   itemset.put(4, new LightItem(tileset.get(4), NOT_MOVEABLE, DOWN_DIRECTION));
   
-  tileset.put(5, "sprites/light-left-moveable-temp.png");
+  //tileset.put(5, "sprites/light-left-moveable-temp.png");
+  tileset.put(5, "sprites/TTeam/LightOrb.png");
   itemset.put(5, new LightItem(tileset.get(5), MOVEABLE, LEFT_DIRECTION));
   
-  tileset.put(6, "sprites/light-left-static-temp.png");
+  //tileset.put(6, "sprites/light-left-static-temp.png");
+  tileset.put(6, "sprites/TTeam/LightOrb.png");
   itemset.put(6, new LightItem(tileset.get(6), NOT_MOVEABLE, LEFT_DIRECTION));
   
-  tileset.put(7, "sprites/light-right-moveable-temp.png");
+  //tileset.put(7, "sprites/light-right-moveable-temp.png");
+  tileset.put(7, "sprites/TTeam/LightOrb.png");
   itemset.put(7, new LightItem(tileset.get(7), MOVEABLE, RIGHT_DIRECTION));
   
-  tileset.put(8, "sprites/light-right-static-temp.png");
+  //tileset.put(8, "sprites/light-right-static-temp.png");
+  tileset.put(8, "sprites/TTeam/LightOrb.png");
   itemset.put(8, new LightItem(tileset.get(8), NOT_MOVEABLE, RIGHT_DIRECTION));
   
-  tileset.put(9, "sprites/light-up-moveable-temp.png");
+  //tileset.put(9, "sprites/light-up-moveable-temp.png");
+  tileset.put(9, "sprites/TTeam/LightOrb.png");
   itemset.put(9, new LightItem(tileset.get(9), MOVEABLE, UP_DIRECTION));
   
-  tileset.put(10, "sprites/light-up-static-temp.png");
+  //tileset.put(10, "sprites/light-up-static-temp.png");
+  tileset.put(10, "sprites/TTeam/LightOrb.png");
   itemset.put(10, new LightItem(tileset.get(10), NOT_MOVEABLE, UP_DIRECTION));
   
-  tileset.put(11, "sprites/player-start-temp.png");
+  //tileset.put(11, "sprites/player-start-temp.png");
+  tileset.put(11, "sprites/TTeam/Forward.png");
   itemset.put(11, new PlayerItem(tileset.get(11), MOVEABLE, NO_DIRECTION));
+  
+  tileset.put(12, "sprites/TTeam/ForwardFlicker1.png");
+  itemset.put(12, new PlayerItem(tileset.get(12), MOVEABLE, NO_DIRECTION));
+  tileset.put(13, "sprites/TTeam/ForwardFlicker2.png");
+  itemset.put(13, new PlayerItem(tileset.get(13), MOVEABLE, NO_DIRECTION));
+  tileset.put(14, "sprites/TTeam/ForwardFlicker3.png");
+  itemset.put(14, new PlayerItem(tileset.get(14), MOVEABLE, NO_DIRECTION));
   
   if(DEBUG)
   {
@@ -133,6 +157,13 @@ void setup()
   curPlayer = curLevel.getPlayer();
   
   getLightManager().setup(curLevel);
+  //getLightManager().createLight(6, 7, RIGHT_DIRECTION, LIGHT_RED);
+  //getLightManager().createLight(8, 4, DOWN_DIRECTION, LIGHT_BLUE);
+  //getLightManager().createLight(14, 10, LEFT_DIRECTION, LIGHT_GREEN);
+  
+  //This makes the flaming character animation
+  renderFrame = 0;
+  playerFrame = 0;
 }
 
 //The loop for screen rendering
@@ -176,13 +207,18 @@ void draw()
   }
   
   //Render the current player (top-most layer)
-  PImage playerSprite = curPlayer.getSprite();
+  renderFrame++;
+  if(renderFrame % 3 == 0)
+  {
+    playerFrame++;
+  }
+  PImage playerSprite = itemset.get(11 + (playerFrame % 4)).getSprite();
   image(playerSprite, curPlayer.getX() * playerSprite.width, curPlayer.getY() * playerSprite.height);
 
   popMatrix();
   
   ++time;
-  
+  /*
   if (time == 30) {
     getLightManager().createLight(3, 5, RIGHT_DIRECTION, LIGHT_GREEN);
   } else if (time == 60) {
@@ -190,7 +226,7 @@ void draw()
   } else if (time == 90) {
     getLightManager().createLight(14, 10, LEFT_DIRECTION, LIGHT_GREEN);
   }
-  
+  */
   getSparkleRenderer().draw();
   getRippleRenderer().draw();
   getLightManager().draw();
