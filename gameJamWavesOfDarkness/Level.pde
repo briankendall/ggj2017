@@ -21,6 +21,8 @@ public class Level
   
   //The layout of actual entities in the game
   protected Entity[][] entityMap;
+  //The player entity is kept separate
+  protected Entity player;
   
   //Constructor reads in information from TMX map file for level data
   /*Parameters:
@@ -62,8 +64,28 @@ public class Level
           tilemap[layer][row][col] = ((t == null) ? NO_TILE:t.getId());
           entityMap[row][col] = ((t == null) ? null:new Entity(itemset.get(t.getId()), col, row));
           if(entityMap[row][col] != null) {entityMap[row][col].makeVisible(true);}
+          //Extract the player from the map when it is found
+          if((entityMap[row][col] != null) && (entityMap[row][col].getBlueprint() instanceof PlayerItem))
+          {
+            //Should only be one player - note error if not the case
+            if(player != null)
+            {
+              println("Error! More than one player loaded from the level!\n");
+              exit();
+            }
+            
+            player = entityMap[row][col];
+            player.makeVisible(true);
+            entityMap[row][col] = null;
+          }
         }
       }
+    }
+    //Need a player if anything was in the level file
+    if((levelLayers > 0) && (player == null))
+    {
+      println("Error! More no player loaded from the level!\n");
+      exit();
     }
     for(int layer = 1; layer < levelLayers; layer++)
     {
@@ -127,6 +149,7 @@ public class Level
   public int getLevelLayers() {return levelLayers;}
   public int[][][] getTileMap() {return tilemap;}
   public String getFilepath() {return filepath;}
+  public Entity getPlayer() {return player;}
   
   public Entity[][] getEntityMap() {return entityMap;}
   //Accessor Methods - END

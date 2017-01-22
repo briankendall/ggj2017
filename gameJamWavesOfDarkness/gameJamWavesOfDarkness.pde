@@ -10,9 +10,10 @@ Massachusetts Amherst site
 */
 
 import java.util.HashMap;
+import java.awt.event.KeyEvent;
 
 //Use to toggle debug mode
-final boolean DEBUG = true;
+final boolean DEBUG = false;
 
 //Some variable constants
 final int SCREEN_HEIGHT = 1200;
@@ -32,6 +33,8 @@ final int LEFT_DIRECTION = 3;
 
 //The current level being played
 Level curLevel = null;
+//The player character
+Entity curPlayer = null;
 
 //The tileset association (tile ID -> filepath)
 HashMap<Integer, String> tileset;
@@ -118,6 +121,7 @@ void setup()
     Level testLevel = new Level(fullFilepath(dataPath(""), "example.tmx"));
   }
   curLevel = new Level(fullFilepath(dataPath(""), "example.tmx"));
+  curPlayer = curLevel.getPlayer();
 }
 
 //The loop for screen rendering
@@ -154,6 +158,10 @@ void draw()
       }
     }
   }
+  
+  //Render the current player (top-most layer)
+  PImage playerSprite = curPlayer.getSprite();
+  image(playerSprite, curPlayer.getX() * playerSprite.width, curPlayer.getY() * playerSprite.height);
 }
 
 //Convenient function for getting a full filepath name
@@ -190,4 +198,139 @@ public PImage[][] getSpriteLayout(Entity[][] entityMap)
   }
   
   return toRender;
+}
+
+//Processes keyboard input to move the character around
+/*Parameters:
+    -------
+  Returns:
+    (void)
+*/
+void keyPressed()
+{
+  //Get the player position and try candidate location from arrow key
+  int playerPosX = curPlayer.getX();
+  int playerPosY = curPlayer.getY();
+  
+  switch(keyCode)
+  {
+    case KeyEvent.VK_UP:
+      //Make sure the location exists
+      if(playerPosY > 0)
+      {
+        //If nothing is in the level at all, then move
+        if((curLevel.getEntityMap())[playerPosY - 1][playerPosX] == null)
+        {
+          playerPosY--;
+        }
+        //Otherwise, make sure the location is valid (moveable object, not visible, etc.)
+        else
+        {
+          Entity temp = (curLevel.getEntityMap())[playerPosY - 1][playerPosX];
+          Entity beyondTemp = (playerPosY < 2) ? null:(curLevel.getEntityMap())[playerPosY - 2][playerPosX];
+          if(!temp.getVisible())
+          {
+            playerPosY--;
+          }
+          //Moveable needs to make sure it is in bounds and not pushing against another visible entity
+          else if(temp.getBlueprint().getMoveable() && (temp.getY() > 0) && ((beyondTemp == null) /*|| !beyondTemp.getVisible()*/))
+          {
+            playerPosY--;
+            //Move the object as well
+            temp.setY(temp.getY() - 1);
+          }
+        }
+      }
+      break;
+    case KeyEvent.VK_DOWN:
+      //Make sure the location exists
+      if(playerPosY < (curLevel.getLevelHeight() - 1))
+      {
+        //If nothing is in the level at all, then move
+        if((curLevel.getEntityMap())[playerPosY + 1][playerPosX] == null)
+        {
+          playerPosY++;
+        }
+        //Otherwise, make sure the location is valid (moveable object, not visible, etc.)
+        else
+        {
+          Entity temp = (curLevel.getEntityMap())[playerPosY + 1][playerPosX];
+          Entity beyondTemp = (playerPosY >= (curLevel.getLevelHeight() - 2)) ? null:(curLevel.getEntityMap())[playerPosY + 2][playerPosX];
+          if(!temp.getVisible())
+          {
+            playerPosY++;
+          }
+          //Moveable needs to make sure it is in bounds and not pushing against another visible entity
+          else if(temp.getBlueprint().getMoveable() && (temp.getY() < (curLevel.getLevelHeight() - 1)) && ((beyondTemp == null) /*|| !beyondTemp.getVisible()*/))
+          {
+            playerPosY++;
+            //Move the object as well
+            temp.setY(temp.getY() + 1);
+          }
+        }
+      }
+      break;
+    case KeyEvent.VK_LEFT:
+      //Make sure the location exists
+      if(playerPosX > 0)
+      {
+        //If nothing is in the level at all, then move
+        if((curLevel.getEntityMap())[playerPosY][playerPosX - 1] == null)
+        {
+          playerPosX--;
+        }
+        //Otherwise, make sure the location is valid (moveable object, not visible, etc.)
+        else
+        {
+          Entity temp = (curLevel.getEntityMap())[playerPosY][playerPosX - 1];
+          Entity beyondTemp = (playerPosX < 2) ? null:(curLevel.getEntityMap())[playerPosY][playerPosX - 2];
+          if(!temp.getVisible())
+          {
+            playerPosX--;
+          }
+          //Moveable needs to make sure it is in bounds and not pushing against another visible entity
+          else if(temp.getBlueprint().getMoveable() && (temp.getX() > 0) && ((beyondTemp == null) /*|| !beyondTemp.getVisible()*/))
+          {
+            playerPosX--;
+            //Move the object as well
+            temp.setX(temp.getX() - 1);
+          }
+        }
+      }
+      break;
+    case KeyEvent.VK_RIGHT:
+      //Make sure the location exists
+      if(playerPosX < (curLevel.getLevelWidth() - 1))
+      {
+        //If nothing is in the level at all, then move
+        if((curLevel.getEntityMap())[playerPosY][playerPosX + 1] == null)
+        {
+          playerPosX++;
+        }
+        //Otherwise, make sure the location is valid (moveable object, not visible, etc.)
+        else
+        {
+          Entity temp = (curLevel.getEntityMap())[playerPosY][playerPosX + 1];
+          Entity beyondTemp = (playerPosX >= (curLevel.getLevelWidth() - 2)) ? null:(curLevel.getEntityMap())[playerPosY][playerPosX + 2];
+          if(!temp.getVisible())
+          {
+            playerPosX++;
+          }
+          //Moveable needs to make sure it is in bounds and not pushing against another visible entity
+          else if(temp.getBlueprint().getMoveable() && (temp.getY() < (curLevel.getLevelWidth() - 1)) && ((beyondTemp == null)/* || !beyondTemp.getVisible()*/))
+          {
+            playerPosX++;
+            //Move the object as well
+            //(curLevel.getEntityMap())[temp.getY()][temp.getX()] = ;
+            temp.setX(temp.getX() + 1);
+          }
+        }
+      }
+      break;
+    default:
+  }
+  
+  //Update the player position (even if variables didn't change)
+  curPlayer.setX(playerPosX);
+  curPlayer.setY(playerPosY);
 }

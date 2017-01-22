@@ -55,6 +55,7 @@ public class Entity
   public boolean[] getRevealers() {return validRevealers;}
   public boolean[] getExposures() {return curExposure;}
   public int getEmit() {return emit;}
+  public Item getBlueprint() {return blueprint;}
   //Special accessor method to get the Sprite from the blueprint
   public PImage getSprite() {return blueprint.getSprite();}
   //Accessor methods - END

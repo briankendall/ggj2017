@@ -109,7 +109,7 @@ public class InstrumentItem extends Item
   {
     //The instrument releases an omni-directional soundwave
     //NOTE: This entity can access its emission type using map[x][y].getEmit()
-    int entityEmit = map[x][y].getEmit();
+    int entityEmit = map[y][x].getEmit();
     //Propogate and play sound
   }
 }
@@ -141,7 +141,7 @@ public class LightItem extends Item
   {
     //The light releases a one-directional light beam
     //NOTE: This entity can access its emission type using map[x][y].getEmit()
-    int entityEmit = map[x][y].getEmit();
+    int entityEmit = map[y][x].getEmit();
     //Project and illuminate
   }
 }
