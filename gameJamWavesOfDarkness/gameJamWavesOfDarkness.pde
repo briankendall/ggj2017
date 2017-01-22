@@ -4,10 +4,15 @@
   Returns:
     (void)
 */
+
+BackgroundRenderer cloudBackground;
+
 void setup()
 {
   //Set the screen size, and note 2D
-  size(1200, 1200, P2D);
+  size(1024, 768, P2D);
+  cloudBackground = new BackgroundRenderer();
+  cloudBackground.setup();
 }
 
 //The loop for screen rendering
@@ -22,6 +27,7 @@ void draw()
   clear();
   //Set the background color (black)
   background(0, 0, 0);
+  cloudBackground.draw();
   
   //Set the pen color fill to white
   fill(255, 255, 255);
@@ -41,4 +47,5 @@ void draw()
   //Remove the tint
   noTint();
   image(myImg, 60, 250);
+  
 }
