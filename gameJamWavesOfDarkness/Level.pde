@@ -87,7 +87,8 @@ public class Level
       println("Error! More no player loaded from the level!\n");
       exit();
     }
-    for(int layer = 1; layer < levelLayers; layer++)
+    //Next is the emission layer
+    for(int layer = 1; layer < min(2, levelLayers); layer++)
     {
       MapLayer l = levelMap.getLayer(layer);
       for(int row = 0; row < levelHeight; row++)
@@ -96,6 +97,50 @@ public class Level
         {
           Tile t = ((TileLayer)l).getTileAt(col, row);
           tilemap[layer][row][col] = ((t == null) ? NO_TILE:t.getId());
+          //Tiles in these layers indicate emission, triggers, reveals, etc.
+          if((t != null) && (entityMap[row][col] != null))
+          {
+            Entity temp = entityMap[row][col];
+            temp.setEmit(t.getId());
+          }
+        }
+      }
+    }
+    //Then 4 trigger layers
+    for(int layer = 2; layer < min(6, levelLayers); layer++)
+    {
+      MapLayer l = levelMap.getLayer(layer);
+      for(int row = 0; row < levelHeight; row++)
+      {
+        for(int col = 0; col < levelWidth; col++)
+        {
+          Tile t = ((TileLayer)l).getTileAt(col, row);
+          tilemap[layer][row][col] = ((t == null) ? NO_TILE:t.getId());
+          //Tiles in these layers indicate emission, triggers, reveals, etc.
+          if((t != null) && (entityMap[row][col] != null))
+          {
+            Entity temp = entityMap[row][col];
+            temp.addTrigger(t.getId());
+          }
+        }
+      }
+    }
+    //Lastly 4 reveal layers
+    for(int layer = 6; layer < min(10, levelLayers); layer++)
+    {
+      MapLayer l = levelMap.getLayer(layer);
+      for(int row = 0; row < levelHeight; row++)
+      {
+        for(int col = 0; col < levelWidth; col++)
+        {
+          Tile t = ((TileLayer)l).getTileAt(col, row);
+          tilemap[layer][row][col] = ((t == null) ? NO_TILE:t.getId());
+          //Tiles in these layers indicate emission, triggers, reveals, etc.
+          if((t != null) && (entityMap[row][col] != null))
+          {
+            Entity temp = entityMap[row][col];
+            temp.addRevealer(t.getId());
+          }
         }
       }
     }

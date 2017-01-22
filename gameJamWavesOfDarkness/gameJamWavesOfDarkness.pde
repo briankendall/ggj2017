@@ -43,22 +43,22 @@ HashMap<Integer, String> tileset;
 HashMap<Integer, Item> itemset;
 
 //Constants for forms of interation
-final int PLAYER_INTERACT = 0;
+final int PLAYER_INTERACT = 14;
+final int LIGHT_RED = 0;
 final int LIGHT_NONE = 0;
-final int LIGHT_RED = 1;
 final int LIGHT_GREEN = 2;
-final int LIGHT_BLUE = 3;
-final int LIGHT_YELLOW = 4;
-final int LIGHT_CYAN = 5;
-final int LIGHT_MAGENTA = 6;
-final int LIGHT_WHITE = 7;
-final int SOUND_RED = 8;
-final int SOUND_ORANGE = 9;
-final int SOUND_YELLOW = 10;
-final int SOUND_GREEN = 11;
-final int SOUND_CYAN = 12;
-final int SOUND_BLUE = 13;
-final int SOUND_PURPLE = 14;
+final int LIGHT_BLUE = 4;
+final int LIGHT_YELLOW = 1;
+final int LIGHT_CYAN = 3;
+final int LIGHT_MAGENTA = 5;
+final int LIGHT_WHITE = 6;
+final int SOUND_RED = 7;
+final int SOUND_ORANGE = 8;
+final int SOUND_YELLOW = 9;
+final int SOUND_GREEN = 10;
+final int SOUND_CYAN = 11;
+final int SOUND_BLUE = 12;
+final int SOUND_PURPLE = 13;
 final int TOTAL_INTERACTIONS = 15;
 final int TOTAL_LIGHT = 8;
 final int SOUND_START = 8;
@@ -80,10 +80,10 @@ void setup()
   cloudBackground = new BackgroundRenderer();
   cloudBackground.setup();
   getSparkleRenderer().setup();
-  getSparkleRenderer().createSparkles(100, 100, 64, 64, color(255, 0, 0), 1.0);
+  //getSparkleRenderer().createSparkles(100, 100, 64, 64, color(255, 0, 0), 1.0);
   
   getRippleRenderer().setup();
-  getRippleRenderer().createRipples(300, 300, 100, new color[]{color(0,255,0), color(0, 0, 255)});
+  //getRippleRenderer().createRipples(300, 300, 100, new color[]{color(0,255,0), color(0, 0, 255)});
   
   //Fill in the tileset
   tileset = new HashMap();
@@ -226,6 +226,24 @@ public PImage[][] getSpriteLayout(Entity[][] entityMap)
     for(int col = 0; col < entityMap[row].length; col++)
     {
       toRender[row][col] = ((entityMap[row][col] == null) || (!entityMap[row][col].getVisible())) ? null:entityMap[row][col].getSprite();
+      if(entityMap[row][col] == null) {continue;}
+      //Determine which sparkles/ripples are needed for the entity (and not exposed yet)
+      boolean[] trigg = entityMap[row][col].getTriggers();
+      boolean[] expos = entityMap[row][col].getExposures();
+      for(int thing = 0; thing < trigg.length; thing++)
+      {
+        if(trigg[thing] && !expos[thing])
+        {
+          if((thing < TOTAL_LIGHT) && (thing >= LIGHT_NONE))
+          {
+            getSparkleRenderer().createSparkles(col * toRender[row][col].height, row * toRender[row][col].width, 64, 64, colorForLightColor(thing, 255), 1.0);
+          }
+          else
+          {
+            //getRippleRenderer().createRipples((col + 0.5) * toRender[row][col].height , (row + 0.5) * toRender[row][col].width, 100, new color[]{color(0,255,0), color(0, 0, 255)});
+          }
+        }
+      }
     }
   }
   
@@ -269,6 +287,8 @@ void keyPressed()
           {
             playerPosY--;
             //Move the object as well
+            (curLevel.getEntityMap())[temp.getY()][temp.getX()] = null;
+            (curLevel.getEntityMap())[temp.getY() - 1][temp.getX()] = temp;
             temp.setY(temp.getY() - 1);
           }
         }
@@ -297,6 +317,8 @@ void keyPressed()
           {
             playerPosY++;
             //Move the object as well
+            (curLevel.getEntityMap())[temp.getY()][temp.getX()] = null;
+            (curLevel.getEntityMap())[temp.getY() + 1][temp.getX()] = temp;
             temp.setY(temp.getY() + 1);
           }
         }
@@ -325,6 +347,8 @@ void keyPressed()
           {
             playerPosX--;
             //Move the object as well
+            (curLevel.getEntityMap())[temp.getY()][temp.getX()] = null;
+            (curLevel.getEntityMap())[temp.getY()][temp.getX() - 1] = temp;
             temp.setX(temp.getX() - 1);
           }
         }
@@ -353,7 +377,8 @@ void keyPressed()
           {
             playerPosX++;
             //Move the object as well
-            //(curLevel.getEntityMap())[temp.getY()][temp.getX()] = ;
+            (curLevel.getEntityMap())[temp.getY()][temp.getX()] = null;
+            (curLevel.getEntityMap())[temp.getY()][temp.getX() + 1] = temp;
             temp.setX(temp.getX() + 1);
           }
         }
