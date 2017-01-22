@@ -9,13 +9,15 @@ Game produced for GameJam 2017 at the University of
 Massachusetts Amherst site
 */
 
-
 //Use to toggle debug mode
 final boolean DEBUG = true;
 
 //Some variable constants
 final int SCREEN_HEIGHT = 1200;
 final int SCREEN_WIDTH = 1200;
+
+//Special constant for no tile to draw
+final int NO_TILE = -1;
 
 //Initializes everything
 /*Paremeters:
@@ -30,7 +32,7 @@ void setup()
   
   if(DEBUG)
   {
-    Level testLevel = new Level(fullFilepath(dataPath(""), "sewers.tmx"));
+    Level testLevel = new Level(fullFilepath(dataPath(""), "example.tmx"));
   }
 }
 

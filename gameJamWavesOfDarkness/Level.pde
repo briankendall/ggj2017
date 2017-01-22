@@ -13,7 +13,7 @@ public class Level
   protected int levelHeight;
   protected int levelWidth;
   protected int levelLayers;
-  protected int[][] tilemap;
+  protected int[][][] tilemap;
   //The TMX filename used to load the level
   protected String filepath;
   //The TMX Map object
@@ -34,7 +34,10 @@ public class Level
     }
     catch(Exception e)
     {
-      println("Warning: Level " + fpath + " does not exist!");
+      //println("Warning: Level " + fpath + " does not exist!");
+      e.printStackTrace();
+      println(e);
+      exit();
     }
     levelHeight = levelMap.getHeight();
     levelWidth = levelMap.getWidth();
@@ -93,4 +96,7 @@ public class Level
       }
     }
   }
+  
+  //Accessor Methods - START
+  //Accessor Methods - END
 }
