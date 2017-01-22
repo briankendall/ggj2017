@@ -47,8 +47,8 @@ HashMap<Integer, Item> itemset;
 
 //Constants for forms of interation
 final int PLAYER_INTERACT = 14;
-final int LIGHT_RED = 0;
 final int LIGHT_NONE = 0;
+final int LIGHT_RED = 1;
 final int LIGHT_GREEN = 2;
 final int LIGHT_BLUE = 4;
 final int LIGHT_YELLOW = 1;
@@ -66,6 +66,8 @@ final int TOTAL_INTERACTIONS = 15;
 final int TOTAL_LIGHT = 8;
 final int TOTAL_SOUND = 7;
 final int SOUND_NONE = 16;
+final int SOUND_START = 8;
+final int SOUND_END = 14;
 
 //Initializes everything
 /*Paremeters:
@@ -171,6 +173,8 @@ void setup()
     (void)
 */
 
+int time = 0;
+
 void draw()
 {
   //Clear the screen
@@ -212,6 +216,16 @@ void draw()
   image(playerSprite, curPlayer.getX() * playerSprite.width, curPlayer.getY() * playerSprite.height);
 
   popMatrix();
+  
+  ++time;
+  
+  if (time == 30) {
+    getLightManager().createLight(3, 5, RIGHT_DIRECTION, LIGHT_GREEN);
+  } else if (time == 60) {
+    getLightManager().createLight(8, 4, DOWN_DIRECTION, LIGHT_BLUE);
+  } else if (time == 90) {
+    getLightManager().createLight(14, 10, LEFT_DIRECTION, LIGHT_GREEN);
+  }
   
   getSparkleRenderer().draw();
   getRippleRenderer().draw();

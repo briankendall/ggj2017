@@ -2,6 +2,7 @@ import java.io.File;
 import tiled.core.*;
 import tiled.io.TMXMapReader;
 import java.util.List;
+import java.util.Properties;
 
 /*
 The Level class provides the information for generating 
@@ -120,7 +121,7 @@ public class Level
           if((t != null) && (entityMap[row][col] != null))
           {
             Entity temp = entityMap[row][col];
-            temp.addTrigger(t.getId());
+            temp.addTrigger(interactionForTile(t));
           }
         }
       }
@@ -139,7 +140,7 @@ public class Level
           if((t != null) && (entityMap[row][col] != null))
           {
             Entity temp = entityMap[row][col];
-            temp.addRevealer(t.getId());
+            temp.addRevealer(interactionForTile(t));
           }
         }
       }
@@ -186,6 +187,58 @@ public class Level
         }
       }
     }
+  }
+  
+  private int interactionForTile(Tile t) {
+    Properties props = t.getProperties();
+    
+    String lightTrigger = props.getProperty("lightType", "");
+    //println("    lightTrigger: " + lightTrigger);
+    
+    if (lightTrigger != null) {
+        if (lightTrigger.equals("red")) {
+            return LIGHT_RED;
+        } else if (lightTrigger.equals("green")) {
+            return LIGHT_GREEN;
+        } else if (lightTrigger.equals("blue")) {
+            return LIGHT_BLUE;
+        } else if (lightTrigger.equals("yellow")) {
+            return LIGHT_YELLOW;
+        } else if (lightTrigger.equals("cyan")) {
+            return LIGHT_CYAN;
+        } else if (lightTrigger.equals("magenta")) {
+            return LIGHT_MAGENTA;
+        } else if (lightTrigger.equals("white")) {
+            return LIGHT_WHITE;
+        }
+    }
+    
+    String soundTrigger = props.getProperty("soundType");
+    //println("    soundTrigger: " + soundTrigger);
+    
+    if (soundTrigger != null) {
+        if (soundTrigger.equals("red")) {
+            return SOUND_RED;
+        } else if (soundTrigger.equals("green")) {
+            return SOUND_GREEN;
+        } else if (soundTrigger.equals("blue")) {
+            return SOUND_BLUE;
+        } else if (soundTrigger.equals("yellow")) {
+            return SOUND_YELLOW;
+        } else if (soundTrigger.equals("cyan")) {
+            return SOUND_CYAN;
+        } else if (soundTrigger.equals("orange")) {
+            return SOUND_ORANGE;
+        } else if (soundTrigger.equals("purple")) {
+            return SOUND_PURPLE;
+        }
+    }
+    
+    if (props.getProperty("playerTrigger") != null) {
+        return PLAYER_INTERACT;
+    }
+    
+    return 0;
   }
   
   //Accessor Methods - BEGIN

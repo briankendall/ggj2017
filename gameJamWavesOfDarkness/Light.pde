@@ -109,6 +109,32 @@ class LightManager {
         Light l = new Light(x, y, direction, lightColor, level.getLevelWidth(),
                             level.getLevelHeight());
         lights.put(lastKey, l);
+        
+        while(x >= 0 && y >= 0 && x < level.getLevelWidth() && y < level.getLevelHeight()) {
+            Entity entity = level.getEntityMap()[y][x];
+            int lc = colorAtTile(x,y);
+            
+            if (entity != null) {
+                if (entity.isRevealedByLightColor(lc)) {
+                    entity.makeVisible(true);
+                }
+                
+                if (entity.isTriggeredByLightColor(lc)) {
+                    entity.trigger();
+                }
+            }
+            
+            if (direction == UP_DIRECTION) {
+                y -= 1;
+            } else if (direction == RIGHT_DIRECTION) {
+                x += 1;
+            } else if (direction == LEFT_DIRECTION) {
+                x -= 1;
+            } else if (direction == DOWN_DIRECTION) {
+                y += 1;
+            }
+        }
+        
         return lastKey;
     }
     
