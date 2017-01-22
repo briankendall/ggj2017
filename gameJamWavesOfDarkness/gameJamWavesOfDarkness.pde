@@ -131,9 +131,9 @@ void setup()
   curPlayer = curLevel.getPlayer();
   
   getLightManager().setup(curLevel);
-  getLightManager().createLight(6, 7, RIGHT_DIRECTION, LIGHT_RED);
-  getLightManager().createLight(8, 4, DOWN_DIRECTION, LIGHT_BLUE);
-  getLightManager().createLight(14, 10, LEFT_DIRECTION, LIGHT_GREEN);
+  //getLightManager().createLight(6, 7, RIGHT_DIRECTION, LIGHT_RED);
+  //getLightManager().createLight(8, 4, DOWN_DIRECTION, LIGHT_BLUE);
+  //getLightManager().createLight(14, 10, LEFT_DIRECTION, LIGHT_GREEN);
 }
 
 //The loop for screen rendering
