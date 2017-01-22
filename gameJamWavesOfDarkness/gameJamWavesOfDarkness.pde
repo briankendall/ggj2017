@@ -44,6 +44,7 @@ HashMap<Integer, Item> itemset;
 
 //Constants for forms of interation
 final int PLAYER_INTERACT = 0;
+final int LIGHT_NONE = 0;
 final int LIGHT_RED = 1;
 final int LIGHT_GREEN = 2;
 final int LIGHT_BLUE = 3;
@@ -59,6 +60,7 @@ final int SOUND_CYAN = 12;
 final int SOUND_BLUE = 13;
 final int SOUND_PURPLE = 14;
 final int TOTAL_INTERACTIONS = 15;
+final int TOTAL_LIGHT = 8;
 
 //Initializes everything
 /*Paremeters:
@@ -127,6 +129,11 @@ void setup()
   }
   curLevel = new Level(fullFilepath(dataPath(""), "example.tmx"));
   curPlayer = curLevel.getPlayer();
+  
+  getLightManager().setup(curLevel);
+  getLightManager().createLight(6, 7, RIGHT_DIRECTION, LIGHT_RED);
+  getLightManager().createLight(8, 4, DOWN_DIRECTION, LIGHT_BLUE);
+  getLightManager().createLight(14, 10, LEFT_DIRECTION, LIGHT_GREEN);
 }
 
 //The loop for screen rendering
@@ -175,6 +182,7 @@ void draw()
   
   getSparkleRenderer().draw();
   getRippleRenderer().draw();
+  getLightManager().draw();
 }
 
 //Convenient function for getting a full filepath name
