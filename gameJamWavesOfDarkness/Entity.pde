@@ -71,5 +71,6 @@ public class Entity
   public void addExposure(int t) {curExposure[t] = true;}
   public void removeExposure(int t) {curExposure[t] = false;}
   public void setEmit(int e) {emit = e;}
+  public void setBlueprint(Item i) {blueprint = i;}
   //Mutator methods - END
 }
