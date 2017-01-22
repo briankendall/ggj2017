@@ -1,3 +1,4 @@
+
 //Some variable constants
 final int SCREEN_HEIGHT = 1200;
 final int SCREEN_WIDTH = 1200;
@@ -11,7 +12,9 @@ final int SCREEN_WIDTH = 1200;
 void setup()
 {
   //Set the screen size, and note 2D
-  size(SCREEN_HEIGHT, SCREEN_WIDTH, P2D);
+  size(1200, 1200, P2D);
+  Test2 test = new Test2();
+  test.printSomething(dataPath(""));
 }
 
 //The loop for screen rendering
