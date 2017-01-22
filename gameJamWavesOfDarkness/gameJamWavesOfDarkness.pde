@@ -72,6 +72,11 @@ void setup()
   size(1024, 768, P2D);
   cloudBackground = new BackgroundRenderer();
   cloudBackground.setup();
+  getSparkleRenderer().setup();
+  getSparkleRenderer().createSparkles(100, 100, 64, 64, color(255, 0, 0), 1.0);
+  
+  getRippleRenderer().setup();
+  getRippleRenderer().createRipples(300, 300, 100, new color[]{color(0,255,0), color(0, 0, 255)});
   
   //Fill in the tileset
   tileset = new HashMap();
@@ -126,6 +131,7 @@ void setup()
   Returns:
     (void)
 */
+
 void draw()
 {
   //Clear the screen
@@ -138,6 +144,8 @@ void draw()
   //background(255,255,255);
   
   //Render the current level
+  pushMatrix();
+  
   PImage[][] levelImg = getSpriteLayout(curLevel.getEntityMap());
   
   for(int row = 0; row < levelImg.length; row++)
@@ -148,12 +156,17 @@ void draw()
       {
         if(DEBUG)
         {
-          print("Drawing image at [" + row + ", " + col + "]\n");
+          //print("Drawing image at [" + row + ", " + col + "]\n");
         }
         image(levelImg[row][col], col * levelImg[row][col].width, row * levelImg[row][col].height);
       }
     }
   }
+  
+  popMatrix();
+  
+  getSparkleRenderer().draw();
+  getRippleRenderer().draw();
 }
 
 //Convenient function for getting a full filepath name
