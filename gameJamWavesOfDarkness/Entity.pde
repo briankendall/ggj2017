@@ -12,6 +12,8 @@ public class Entity
   protected int y;
   //Notes whether object is visible
   protected boolean visible;
+  protected int sparkleId = 0;
+  protected int rippleId = 0;
   
   //Requirements for activation
   boolean[] validTriggers;
@@ -80,6 +82,8 @@ public class Entity
   public Item getBlueprint() {return blueprint;}
   //Special accessor method to get the Sprite from the blueprint
   public PImage getSprite() {return blueprint.getSprite();}
+  public int getSparkleId() { return sparkleId; };
+  public int getRippleId() { return rippleId; };
   //Accessor methods - END
   
   //Mutator methods - BEGIN
@@ -93,5 +97,7 @@ public class Entity
   public void addExposure(int t) {curExposure[t] = true;}
   public void removeExposure(int t) {curExposure[t] = false;}
   public void setEmit(int e) {emit = e;}
+  public void setSparkleId(int i) { sparkleId = i; };
+  public void setRippleId(int i) { rippleId = i; };
   //Mutator methods - END
 }

@@ -43,23 +43,23 @@ HashMap<Integer, String> tileset;
 HashMap<Integer, Item> itemset;
 
 //Constants for forms of interation
-final int PLAYER_INTERACT = 14;
 final int LIGHT_NONE = 0;
 final int LIGHT_RED = 1;
 final int LIGHT_GREEN = 2;
-final int LIGHT_BLUE = 4;
-final int LIGHT_YELLOW = 1;
-final int LIGHT_CYAN = 3;
-final int LIGHT_MAGENTA = 5;
-final int LIGHT_WHITE = 6;
-final int SOUND_RED = 7;
-final int SOUND_ORANGE = 8;
-final int SOUND_YELLOW = 9;
-final int SOUND_GREEN = 10;
-final int SOUND_CYAN = 11;
-final int SOUND_BLUE = 12;
-final int SOUND_PURPLE = 13;
-final int TOTAL_INTERACTIONS = 15;
+final int LIGHT_BLUE = 3;
+final int LIGHT_YELLOW = 4;
+final int LIGHT_CYAN = 5;
+final int LIGHT_MAGENTA = 6;
+final int LIGHT_WHITE = 7;
+final int SOUND_RED = 8;
+final int SOUND_ORANGE = 9;
+final int SOUND_YELLOW = 10;
+final int SOUND_GREEN = 11;
+final int SOUND_CYAN = 12;
+final int SOUND_BLUE = 13;
+final int SOUND_PURPLE = 14;
+final int PLAYER_INTERACT = 15;
+final int TOTAL_INTERACTIONS = 16;
 final int TOTAL_LIGHT = 8;
 final int SOUND_START = 8;
 final int SOUND_END = 14;
@@ -225,24 +225,40 @@ public PImage[][] getSpriteLayout(Entity[][] entityMap)
   {
     for(int col = 0; col < entityMap[row].length; col++)
     {
-      toRender[row][col] = ((entityMap[row][col] == null) || (!entityMap[row][col].getVisible())) ? null:entityMap[row][col].getSprite();
-      if(entityMap[row][col] == null) {continue;}
+      ArrayList<Integer> rippleColors = new ArrayList<Integer>();
+      Entity e = entityMap[row][col];
+      toRender[row][col] = ((e == null) || (!e.getVisible())) ? null:e.getSprite();
+      if(e == null) {continue;}
       //Determine which sparkles/ripples are needed for the entity (and not exposed yet)
-      boolean[] trigg = entityMap[row][col].getTriggers();
-      boolean[] expos = entityMap[row][col].getExposures();
+      boolean[] trigg = e.getTriggers();
+      boolean[] expos = e.getExposures();
+      
       for(int thing = 0; thing < trigg.length; thing++)
       {
         if(trigg[thing] && !expos[thing])
         {
           if((thing < TOTAL_LIGHT) && (thing >= LIGHT_NONE))
           {
-            getSparkleRenderer().createSparkles(col * toRender[row][col].height, row * toRender[row][col].width, 64, 64, colorForLightColor(thing, 255), 1.0);
+            if (e.getSparkleId() == 0) {
+              int id = getSparkleRenderer().createSparkles(col * toRender[row][col].height,
+                                                           row * toRender[row][col].width,
+                                                           64, 64,
+                                                           colorForLightColor(thing, 255), 1.0);
+              e.setSparkleId(id);
+            }
           }
-          else
-          {
-            //getRippleRenderer().createRipples((col + 0.5) * toRender[row][col].height , (row + 0.5) * toRender[row][col].width, 100, new color[]{color(0,255,0), color(0, 0, 255)});
+          else if (thing >= SOUND_START && thing <= SOUND_END) {
+            rippleColors.add(colorForSoundColor(thing, 255));
           }
         }
+      }
+      
+      if (rippleColors.size() > 0 && e.getRippleId() == 0) {
+        int id = getRippleRenderer().createRipples(int((col + 0.5) * toRender[row][col].height),
+                                                   int((row + 0.5) * toRender[row][col].width),
+                                                   100,
+                                                   rippleColors);
+        e.setRippleId(id);
       }
     }
   }
@@ -383,6 +399,9 @@ void keyPressed()
           }
         }
       }
+      break;
+    case KeyEvent.VK_SPACE:
+      println("Space!");
       break;
     default:
   }

@@ -8,21 +8,20 @@ class RippleSet {
     private int x;
     private int y;
     private int maxRadius;
-    private color[] colors;
+    private ArrayList<Integer> colors;
     private int spawnCount = 0;
     private final int minSpawnTime = 12;
     private final int maxSpawnTime = 24;
     private final int lifeSpan = 60;
     private final int fadeInTime = lifeSpan/2;
     private final int fadeOutTime = lifeSpan/2;
-    private final float overallOpacity = 0.7;
+    private final float overallOpacity = 0.5;
     
-    RippleSet(int inX, int inY, int inMaxRadius, color[] inColors) {
+    RippleSet(int inX, int inY, int inMaxRadius, ArrayList<Integer> inColors) {
         x = inX;
         y = inY;
         maxRadius = inMaxRadius;
-        colors = new color [inColors.length];
-        arrayCopy(inColors, colors);
+        colors = inColors;
     }
     
     void draw() {
@@ -30,7 +29,7 @@ class RippleSet {
             spawnCount = randomInt(minSpawnTime, maxSpawnTime);
             Ripple r = new Ripple();
             r.life = 0;
-            r.c = colors[randomInt(0, colors.length-1)];
+            r.c = colors.get(randomInt(0, colors.size()-1));
             ripples.add(r);
         } else {
             spawnCount -= 1;
@@ -76,7 +75,7 @@ class RippleRenderer {
         }
     }
     
-    public int createRipples(int x, int y, int radius, color[] colors) {
+    public int createRipples(int x, int y, int radius, ArrayList<Integer> colors) {
         lastKey += 1;
         rippleSets.put(lastKey, new RippleSet(x, y, radius, colors));
         return lastKey;
