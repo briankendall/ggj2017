@@ -11,6 +11,7 @@ Massachusetts Amherst site
 
 import java.util.HashMap;
 import java.awt.event.KeyEvent;
+import processing.sound.*;
 
 //Use to toggle debug mode
 final boolean DEBUG = false;
@@ -77,6 +78,9 @@ final int SOUND_END = 14;
 */
 
 BackgroundRenderer cloudBackground;
+
+SoundFile backgroundAudio;
+SoundFile pushAudio;
 
 void setup()
 {
@@ -164,6 +168,11 @@ void setup()
   //This makes the flaming character animation
   renderFrame = 0;
   playerFrame = 0;
+  
+  backgroundAudio = new SoundFile(this, "sounds/waves_atmosphere_loop.wav");
+  backgroundAudio.loop();
+  
+  pushAudio = new SoundFile(this, "sounds/game_sfx/game_object_push_01.wav");
 }
 
 //The loop for screen rendering
@@ -342,6 +351,7 @@ void keyPressed()
             (curLevel.getEntityMap())[temp.getY()][temp.getX()] = null;
             (curLevel.getEntityMap())[temp.getY() - 1][temp.getX()] = temp;
             temp.setY(temp.getY() - 1);
+            pushAudio.play();
           }
         }
       }
@@ -372,6 +382,7 @@ void keyPressed()
             (curLevel.getEntityMap())[temp.getY()][temp.getX()] = null;
             (curLevel.getEntityMap())[temp.getY() + 1][temp.getX()] = temp;
             temp.setY(temp.getY() + 1);
+            pushAudio.play();
           }
         }
       }
@@ -402,6 +413,7 @@ void keyPressed()
             (curLevel.getEntityMap())[temp.getY()][temp.getX()] = null;
             (curLevel.getEntityMap())[temp.getY()][temp.getX() - 1] = temp;
             temp.setX(temp.getX() - 1);
+            pushAudio.play();
           }
         }
       }
@@ -432,6 +444,7 @@ void keyPressed()
             (curLevel.getEntityMap())[temp.getY()][temp.getX()] = null;
             (curLevel.getEntityMap())[temp.getY()][temp.getX() + 1] = temp;
             temp.setX(temp.getX() + 1);
+            pushAudio.play();
           }
         }
       }
