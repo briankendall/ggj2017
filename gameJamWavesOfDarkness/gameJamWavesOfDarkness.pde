@@ -61,6 +61,8 @@ final int SOUND_BLUE = 13;
 final int SOUND_PURPLE = 14;
 final int TOTAL_INTERACTIONS = 15;
 final int TOTAL_LIGHT = 8;
+final int SOUND_START = 8;
+final int SOUND_END = 14;
 
 //Initializes everything
 /*Paremeters:
@@ -131,9 +133,6 @@ void setup()
   curPlayer = curLevel.getPlayer();
   
   getLightManager().setup(curLevel);
-  //getLightManager().createLight(6, 7, RIGHT_DIRECTION, LIGHT_RED);
-  //getLightManager().createLight(8, 4, DOWN_DIRECTION, LIGHT_BLUE);
-  //getLightManager().createLight(14, 10, LEFT_DIRECTION, LIGHT_GREEN);
 }
 
 //The loop for screen rendering
@@ -142,6 +141,8 @@ void setup()
   Returns:
     (void)
 */
+
+int time = 0;
 
 void draw()
 {
@@ -179,6 +180,16 @@ void draw()
   image(playerSprite, curPlayer.getX() * playerSprite.width, curPlayer.getY() * playerSprite.height);
 
   popMatrix();
+  
+  ++time;
+  
+  if (time == 30) {
+    getLightManager().createLight(3, 5, RIGHT_DIRECTION, LIGHT_GREEN);
+  } else if (time == 60) {
+    getLightManager().createLight(8, 4, DOWN_DIRECTION, LIGHT_BLUE);
+  } else if (time == 90) {
+    getLightManager().createLight(14, 10, LEFT_DIRECTION, LIGHT_GREEN);
+  }
   
   getSparkleRenderer().draw();
   getRippleRenderer().draw();

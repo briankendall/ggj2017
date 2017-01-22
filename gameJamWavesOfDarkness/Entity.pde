@@ -47,6 +47,28 @@ public class Entity
     curExposure = new boolean[TOTAL_INTERACTIONS];
   }
   
+  public boolean isRevealedByLightColor(int lightColor) {
+    return getRevealers()[lightColor];
+  }
+
+  public boolean isTriggeredByLightColor(int lightColor) {
+    return getTriggers()[lightColor] && !isTriggeredBySound();
+  }
+  
+  public boolean isTriggeredBySound() {
+    for(int i = SOUND_START; i <= SOUND_END; ++i) {
+      if (getTriggers()[i]) {
+        return true;
+      }
+    }
+    
+    return false;
+  }
+  
+  public void trigger() {
+    println("Triggered entity at: " + x + " , " + y);
+  }
+  
   //Accessor methods - BEGIN
   public int getX() {return x;}
   public int getY() {return y;}
