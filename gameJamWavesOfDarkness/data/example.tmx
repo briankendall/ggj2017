@@ -2,86 +2,168 @@
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="12" tilewidth="64" tileheight="64" nextobjectid="1">
  <tileset firstgid="1" name="Objects" tilewidth="64" tileheight="64" tilecount="12" columns="0">
   <tile id="10">
+   <properties>
+    <property name="exit" type="bool" value="true"/>
+    <property name="moveable" type="bool" value="false"/>
+   </properties>
    <image width="64" height="64" source="sprites/exit-temp.png"/>
   </tile>
   <tile id="11">
+   <properties>
+    <property name="moveable" type="bool" value="true"/>
+   </properties>
    <image width="64" height="64" source="sprites/instrument-moveable-temp.png"/>
   </tile>
   <tile id="12">
+   <properties>
+    <property name="moveable" type="bool" value="false"/>
+   </properties>
    <image width="64" height="64" source="sprites/instrument-static-temp.png"/>
   </tile>
   <tile id="13">
+   <properties>
+    <property name="moveable" type="bool" value="true"/>
+   </properties>
    <image width="64" height="64" source="sprites/light-down-moveable-temp.png"/>
   </tile>
   <tile id="14">
+   <properties>
+    <property name="moveable" type="bool" value="false"/>
+   </properties>
    <image width="64" height="64" source="sprites/light-down-static-temp.png"/>
   </tile>
   <tile id="15">
+   <properties>
+    <property name="moveable" type="bool" value="true"/>
+   </properties>
    <image width="64" height="64" source="sprites/light-left-moveable-temp.png"/>
   </tile>
   <tile id="16">
+   <properties>
+    <property name="moveable" type="bool" value="false"/>
+   </properties>
    <image width="64" height="64" source="sprites/light-left-static-temp.png"/>
   </tile>
   <tile id="17">
+   <properties>
+    <property name="moveable" type="bool" value="true"/>
+   </properties>
    <image width="64" height="64" source="sprites/light-right-moveable-temp.png"/>
   </tile>
   <tile id="18">
+   <properties>
+    <property name="moveable" type="bool" value="false"/>
+   </properties>
    <image width="64" height="64" source="sprites/light-right-static-temp.png"/>
   </tile>
   <tile id="19">
+   <properties>
+    <property name="moveable" type="bool" value="true"/>
+   </properties>
    <image width="64" height="64" source="sprites/light-up-moveable-temp.png"/>
   </tile>
   <tile id="20">
+   <properties>
+    <property name="moveable" type="bool" value="false"/>
+   </properties>
    <image width="64" height="64" source="sprites/light-up-static-temp.png"/>
   </tile>
   <tile id="21">
+   <properties>
+    <property name="playerStart" type="bool" value="true"/>
+   </properties>
    <image width="64" height="64" source="sprites/player-start-temp.png"/>
   </tile>
  </tileset>
  <tileset firstgid="23" name="colors" tilewidth="64" tileheight="64" tilecount="15" columns="0">
   <tile id="14">
+   <properties>
+    <property name="lightType" value="red"/>
+   </properties>
    <image width="64" height="64" source="light-red.png"/>
   </tile>
   <tile id="15">
+   <properties>
+    <property name="lightType" value="yellow"/>
+   </properties>
    <image width="64" height="64" source="light-yellow.png"/>
   </tile>
   <tile id="16">
+   <properties>
+    <property name="lightType" value="green"/>
+   </properties>
    <image width="64" height="64" source="light-green.png"/>
   </tile>
   <tile id="17">
+   <properties>
+    <property name="lightType" value="cyan"/>
+   </properties>
    <image width="64" height="64" source="light-cyan.png"/>
   </tile>
   <tile id="18">
+   <properties>
+    <property name="lightType" value="blue"/>
+   </properties>
    <image width="64" height="64" source="light-blue.png"/>
   </tile>
   <tile id="19">
+   <properties>
+    <property name="lightType" value="magenta"/>
+   </properties>
    <image width="64" height="64" source="light-magenta.png"/>
   </tile>
   <tile id="20">
+   <properties>
+    <property name="lightType" value="white"/>
+   </properties>
    <image width="64" height="64" source="light-white.png"/>
   </tile>
   <tile id="21">
+   <properties>
+    <property name="soundType" value="red"/>
+   </properties>
    <image width="64" height="64" source="sound-red.png"/>
   </tile>
   <tile id="22">
+   <properties>
+    <property name="soundType" value="orange"/>
+   </properties>
    <image width="64" height="64" source="sound-orange.png"/>
   </tile>
   <tile id="23">
+   <properties>
+    <property name="soundType" value="yellow"/>
+   </properties>
    <image width="64" height="64" source="sound-yellow.png"/>
   </tile>
   <tile id="24">
+   <properties>
+    <property name="soundType" value="green"/>
+   </properties>
    <image width="64" height="64" source="sound-green.png"/>
   </tile>
   <tile id="25">
+   <properties>
+    <property name="soundType" value="cyan"/>
+   </properties>
    <image width="64" height="64" source="sound-cyan.png"/>
   </tile>
   <tile id="26">
+   <properties>
+    <property name="soundType" value="blue"/>
+   </properties>
    <image width="64" height="64" source="sound-blue.png"/>
   </tile>
   <tile id="27">
+   <properties>
+    <property name="soundType" value="purple"/>
+   </properties>
    <image width="64" height="64" source="sound-purple.png"/>
   </tile>
   <tile id="28">
+   <properties>
+    <property name="playerTrigger" type="bool" value="true"/>
+   </properties>
    <image width="64" height="64" source="player.png"/>
   </tile>
  </tileset>
@@ -104,7 +186,7 @@
 13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="emits" width="16" height="12" opacity="0.5" offsetx="10" offsety="10">
+ <layer name="emits" width="16" height="12" visible="0" opacity="0.5" offsetx="10" offsety="10">
   <properties>
    <property name="type" value="emits"/>
   </properties>
