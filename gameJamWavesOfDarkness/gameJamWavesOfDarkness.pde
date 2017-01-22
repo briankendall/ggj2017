@@ -44,8 +44,8 @@ HashMap<Integer, Item> itemset;
 
 //Constants for forms of interation
 final int PLAYER_INTERACT = 14;
-final int LIGHT_RED = 0;
 final int LIGHT_NONE = 0;
+final int LIGHT_RED = 1;
 final int LIGHT_GREEN = 2;
 final int LIGHT_BLUE = 4;
 final int LIGHT_YELLOW = 1;
